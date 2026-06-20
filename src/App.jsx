@@ -1,4 +1,6 @@
 import React from 'react';
+import ProductForm from './components/ProductForm.jsx';
+import ProductList from './components/ProductList.jsx';
 
 function App() {
   return (
@@ -12,10 +14,11 @@ function App() {
         </header>
 
         <main>
-          {/* We will add the Form and Table here in the next steps */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <p className="text-gray-600">App is ready! Tailwind is working perfectly.</p>
-          </div>
+          {/* Add Product Form */}
+          <ProductForm />
+
+          {/* Product Table and Filters */}
+          <ProductList />
         </main>
       </div>
     </div>
