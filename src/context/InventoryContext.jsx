@@ -14,6 +14,12 @@ export const InventoryProvider = ({ children }) => {
         return saved ? JSON.parse(saved) : ['Electronics', 'Clothing', 'Food', 'Other'];
     });
 
+    // --- New State for Stock History Logs ---
+    const [logs, setLogs] = useState(() => {
+        const saved = localStorage.getItem('inventoryLogs');
+        return saved ? JSON.parse(saved) : [];
+    });
+
     useEffect(() => {
         localStorage.setItem('products', JSON.stringify(products));
     }, [products]);
@@ -21,6 +27,22 @@ export const InventoryProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem('categories', JSON.stringify(categories));
     }, [categories]);
+
+    useEffect(() => {
+        localStorage.setItem('inventoryLogs', JSON.stringify(logs));
+    }, [logs]);
+
+    // Add Log Helper Function
+    const addLog = (productName, action, amount) => {
+        const newLog = {
+            id: uuidv4(),
+            productName,
+            action,
+            amount,
+            date: new Date().toLocaleString()
+        };
+        setLogs((prev) => [newLog, ...prev].slice(0, 50)); // Keep only the latest 50 logs
+    };
 
     const addProduct = (product) => {
         setProducts([...products, { ...product, id: uuidv4() }]);
@@ -38,6 +60,9 @@ export const InventoryProvider = ({ children }) => {
         setProducts(products.map(p => {
             if (p.id === id) {
                 const newStock = Math.max(0, Number(p.stockQuantity) + amount);
+                if (newStock !== p.stockQuantity) {
+                    addLog(p.productName, amount > 0 ? 'Stock Added' : 'Stock Reduced', Math.abs(amount));
+                }
                 return { ...p, stockQuantity: newStock };
             }
             return p;
@@ -50,7 +75,6 @@ export const InventoryProvider = ({ children }) => {
         }
     };
 
-    // --- New Bulk Action Functions ---
     const bulkDelete = (ids) => {
         setProducts(products.filter(p => !ids.includes(p.id)));
     };
@@ -58,6 +82,7 @@ export const InventoryProvider = ({ children }) => {
     const bulkUpdateStock = (ids, amount) => {
         setProducts(products.map(p => {
             if (ids.includes(p.id)) {
+                addLog(p.productName, 'Bulk Stock Added', amount);
                 return { ...p, stockQuantity: Math.max(0, Number(p.stockQuantity) + amount) };
             }
             return p;
@@ -66,8 +91,8 @@ export const InventoryProvider = ({ children }) => {
 
     return (
         <InventoryContext.Provider value={{
-            products, categories, addProduct, updateProduct, deleteProduct, updateStock, addCategory,
-            bulkDelete, bulkUpdateStock // Added here
+            products, categories, logs, addProduct, updateProduct, deleteProduct, updateStock, addCategory,
+            bulkDelete, bulkUpdateStock
         }}>
             {children}
         </InventoryContext.Provider>

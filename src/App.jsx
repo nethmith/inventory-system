@@ -4,6 +4,7 @@ import DashboardStats from './components/DashboardStats.jsx';
 import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
 import AnalyticsChart from './components/AnalyticsChart.jsx';
+import StockHistoryLog from './components/StockHistoryLog.jsx';
 
 function App() {
   // Init theme from localStorage
@@ -48,6 +49,7 @@ function App() {
         <main>
           <DashboardStats />
           <AnalyticsChart />
+          <StockHistoryLog />
           <ProductForm />
           <ProductList />
         </main>
