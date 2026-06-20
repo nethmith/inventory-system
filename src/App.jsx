@@ -1,4 +1,5 @@
 import React from 'react';
+import { Toaster } from 'react-hot-toast';
 import DashboardStats from './components/DashboardStats.jsx';
 import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
@@ -6,7 +7,11 @@ import ProductList from './components/ProductList.jsx';
 function App() {
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-10">
+
+      <Toaster position="top-right" reverseOrder={false} />
+
       <div className="max-w-6xl mx-auto">
+
         <header className="mb-8 border-b pb-4">
           <h1 className="text-3xl font-bold text-gray-800">
             Inventory Management System
