@@ -1,5 +1,7 @@
 # Inventory Management System
 
+🔗 **Live Demo:** https://smart-inventory-ui.netlify.app/
+
 A simple, frontend-only Inventory Management System built with React and Tailwind CSS. This application allows users to manage products, track stock levels, and view inventory statistics, with all data persisting in the browser's `localStorage`.
 
 ## 🚀 Core Features
