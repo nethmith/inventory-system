@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useInventory } from '../context/InventoryContext';
+import toast from 'react-hot-toast';
 
 const ProductList = () => {
     const { products, categories, deleteProduct, updateStock, updateProduct } = useInventory();
@@ -35,15 +36,48 @@ const ProductList = () => {
         setEditProductId(null);
     };
 
+    // Export to CSV Function
+    const exportToCSV = () => {
+        if (products.length === 0) {
+            toast.error('No products to export!');
+            return;
+        }
+
+        const headers = ['ID', 'Product Name', 'Category', 'Price', 'Stock Quantity'];
+        const csvRows = [
+            headers.join(','), // Header row
+            ...products.map(p => `${p.id},"${p.productName}","${p.category}",${p.price},${p.stockQuantity}`)
+        ];
+
+        const csvContent = "data:text/csv;charset=utf-8," + csvRows.join('\n');
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "inventory_export.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        toast.success('Exported to CSV successfully! 📥');
+    };
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-            <h2 className="text-xl font-bold text-gray-800 mb-4">Inventory List</h2>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-gray-800">Inventory List</h2>
+                <button
+                    onClick={exportToCSV}
+                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-semibold text-sm transition"
+                >
+                    Export to CSV
+                </button>
+            </div>
 
             {/* Search and Filters */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <input
                     type="text"
-                    placeholder="Search by Name or PRD..."
+                    placeholder="Search by Name or SKU..."
                     className="border border-gray-300 p-2 rounded-md focus:ring-blue-500 outline-none w-full"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
