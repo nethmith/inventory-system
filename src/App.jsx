@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import DashboardStats from './components/DashboardStats.jsx';
 import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
+import AnalyticsChart from './components/AnalyticsChart.jsx';
 
 function App() {
   // Init theme from localStorage
@@ -46,6 +47,7 @@ function App() {
 
         <main>
           <DashboardStats />
+          <AnalyticsChart />
           <ProductForm />
           <ProductList />
         </main>
