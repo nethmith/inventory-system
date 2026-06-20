@@ -51,4 +51,10 @@ A simple, frontend-only Inventory Management System built with React and Tailwin
     
 5. Open your browser and visit http://localhost:5173
 
+## 📷 Screenshots
 
+### Light Mode
+![Light Mode](./public/light-mode.png)
+
+### Dark Mode
+![Dark Mode](./public/dark-mode.png)
