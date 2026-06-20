@@ -43,7 +43,7 @@ const ProductList = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <input
                     type="text"
-                    placeholder="Search by Name or SKU..."
+                    placeholder="Search by Name or PRD..."
                     className="border border-gray-300 p-2 rounded-md focus:ring-blue-500 outline-none w-full"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}

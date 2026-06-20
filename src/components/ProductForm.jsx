@@ -7,10 +7,12 @@ import { useInventory } from '../context/InventoryContext';
 const ProductForm = () => {
     const { addProduct, categories, addCategory } = useInventory();
 
+    const generateSKU = () => 'PRD-' + Math.floor(100000 + Math.random() * 900000);
+
     const formik = useFormik({
         initialValues: {
             productName: '',
-            sku: '',
+            sku: generateSKU(),
             category: categories[0] || 'Other',
             newCategory: '',
             price: '',
@@ -36,6 +38,7 @@ const ProductForm = () => {
 
             addProduct(productToSave);
             resetForm();
+            formik.setFieldValue('sku', generateSKU());
             toast.success('Product added successfully! 🎉');
         },
     });
@@ -70,6 +73,7 @@ const ProductForm = () => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.sku}
+                        readOnly
                         className={`w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500 outline-none ${formik.touched.sku && formik.errors.sku ? 'border-red-500' : 'border-gray-300'}`}
                     />
                     {formik.touched.sku && formik.errors.sku && (
