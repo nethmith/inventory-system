@@ -4,13 +4,14 @@ import * as Yup from 'yup';
 import { useInventory } from '../context/InventoryContext';
 
 const ProductForm = () => {
-    const { addProduct, categories } = useInventory();
+    const { addProduct, categories, addCategory } = useInventory();
 
     const formik = useFormik({
         initialValues: {
             productName: '',
             sku: '',
             category: categories[0] || 'Other',
+            newCategory: '',
             price: '',
             stockQuantity: '',
         },
@@ -22,7 +23,17 @@ const ProductForm = () => {
             stockQuantity: Yup.number().integer('Stock must be a whole number').min(0, 'Cannot be negative').required('Stock is required'),
         }),
         onSubmit: (values, { resetForm }) => {
-            addProduct(values);
+            // Check if user typed a custom category
+            if (values.newCategory) {
+                addCategory(values.newCategory);
+                values.category = values.newCategory;
+            }
+
+            // Remove 'newCategory' field before saving to storage
+            const productToSave = { ...values };
+            delete productToSave.newCategory;
+
+            addProduct(productToSave);
             resetForm();
             alert('Product added successfully! 🎉');
         },
@@ -65,7 +76,7 @@ const ProductForm = () => {
                     )}
                 </div>
 
-                {/* Category */}
+                {/* Category Dropdown */}
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                     <select
@@ -81,8 +92,21 @@ const ProductForm = () => {
                     </select>
                 </div>
 
+                {/* Custom Category Input */}
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Or Add Custom Category</label>
+                    <input
+                        type="text"
+                        name="newCategory"
+                        placeholder="Type new category..."
+                        onChange={formik.handleChange}
+                        value={formik.values.newCategory}
+                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                </div>
+
                 {/* Price & Stock */}
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:col-span-2">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
                         <input

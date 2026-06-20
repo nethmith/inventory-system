@@ -1,4 +1,5 @@
 import React from 'react';
+import DashboardStats from './components/DashboardStats.jsx';
 import ProductForm from './components/ProductForm.jsx';
 import ProductList from './components/ProductList.jsx';
 
@@ -14,10 +15,13 @@ function App() {
         </header>
 
         <main>
-          {/* Add Product Form */}
+          {/* 1. Dashboard Stats */}
+          <DashboardStats />
+
+          {/* 2. Add Product Form */}
           <ProductForm />
 
-          {/* Product Table and Filters */}
+          {/* 3. Product Table and Filters */}
           <ProductList />
         </main>
       </div>

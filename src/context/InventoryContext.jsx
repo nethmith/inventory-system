@@ -52,9 +52,16 @@ export const InventoryProvider = ({ children }) => {
         }));
     };
 
+    // Add custom category
+    const addCategory = (category) => {
+        if (category && !categories.includes(category)) {
+            setCategories([...categories, category]);
+        }
+    };
+
     return (
         <InventoryContext.Provider value={{
-            products, categories, addProduct, updateProduct, deleteProduct, updateStock
+            products, categories, addProduct, updateProduct, deleteProduct, updateStock, addCategory,
         }}>
             {children}
         </InventoryContext.Provider>
